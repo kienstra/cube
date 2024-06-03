@@ -59,16 +59,18 @@ type DockerResult struct {
 
 type Task struct {
 	ID            uuid.UUID
+	ContainerId   string
+	Cpu           float64
 	Name          string
 	State         State
 	Image         string
-	CPU           float64
-	Memory        int
-	Disk          int
+	Memory        int64
+	Disk          int64
 	ExposedPorts  nat.PortSet
 	PortBindings  map[string]string
 	RestartPolicy string
 	StartTime     time.Time
+	FinishTime    time.Time
 }
 
 type TaskEvent struct {
@@ -163,6 +165,26 @@ func (d *Docker) Stop(id string) DockerResult {
 	}
 
 	return DockerResult{Action: "stop", ContainerId: id, Result: "success", Error: nil}
+}
+
+func NewConfig(t Task) Config {
+	return Config{
+		Name:          t.Name,
+		ExposedPorts:  t.ExposedPorts,
+		Image:         t.Image,
+		Cpu:           t.Cpu,
+		Memory:        t.Memory,
+		Disk:          t.Disk,
+		RestartPolicy: "always",
+	}
+}
+
+func NewDocker(c Config) Docker {
+	dc, _ := client.NewClientWithOpts(client.FromEnv)
+	return Docker{
+		Client: dc,
+		Config: c,
+	}
 }
 
 /*func (cli *Client) ContainerCreate(ctx context.Context, config *container2.Config, hostConfig *container2.HostConfig, networkingConfig *network.NetworkingConfig, platform *specs.Platform, containerName string) (container.ContainerCreateCreatedBody, error) {
