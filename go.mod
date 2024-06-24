@@ -7,6 +7,7 @@ toolchain go1.22.3
 require (
 	github.com/docker/docker v26.1.3+incompatible
 	github.com/docker/go-connections v0.5.0
+	github.com/go-chi/chi v1.5.5
 	github.com/golang-collections/collections v0.0.0-20130729185459-604e922904d3
 	github.com/google/uuid v1.6.0
 	github.com/moby/moby v26.1.3+incompatible
