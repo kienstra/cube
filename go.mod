@@ -5,6 +5,7 @@ go 1.21
 toolchain go1.22.3
 
 require (
+	github.com/c9s/goprocinfo v0.0.0-20210130143923-c95fcf8c64a8
 	github.com/docker/docker v26.1.3+incompatible
 	github.com/docker/go-connections v0.5.0
 	github.com/go-chi/chi v1.5.5
