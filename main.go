@@ -40,9 +40,9 @@ func runTasks(w *worker.Worker) {
 		} else {
 			log.Print("No task to process.\n")
 		}
-		seconds := 1
+		seconds := 10
 		log.Printf("Sleeping for %d seconds", seconds)
-		time.Sleep(10 * time.Second)
+		time.Sleep(time.Duration(seconds) * time.Second)
 	}
 }
 

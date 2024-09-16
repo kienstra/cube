@@ -15,16 +15,6 @@ import (
 	"time"
 )
 
-type State int
-
-const (
-	Pending State = iota
-	Scheduled
-	Running
-	Completed
-	Failed
-)
-
 type Config struct {
 	Name          string
 	AttachStdin   bool
@@ -78,28 +68,6 @@ type TaskEvent struct {
 	State     State
 	Timestamp time.Time
 	Task      Task
-}
-
-var stateTransitionMap = map[State][]State{
-	Pending:   []State{Scheduled},
-	Scheduled: []State{Scheduled, Running, Failed},
-	Running:   []State{Running, Completed, Failed},
-	Completed: []State{},
-	Failed:    []State{},
-}
-
-func Contains(states []State, state State) bool {
-	for _, s := range states {
-		if s == state {
-			return true
-		}
-	}
-
-	return false
-}
-
-func ValidStateTransition(src State, dst State) bool {
-	return Contains(stateTransitionMap[src], dst)
 }
 
 func (d *Docker) Run() DockerResult {
@@ -208,7 +176,3 @@ func NewDocker(c Config) Docker {
 		Config: c,
 	}
 }
-
-/*func (cli *Client) ContainerCreate(ctx context.Context, config *container2.Config, hostConfig *container2.HostConfig, networkingConfig *network.NetworkingConfig, platform *specs.Platform, containerName string) (container.ContainerCreateCreatedBody, error) {
-	return client.ContainerCreate(ctx, config, hostConfig, networkingConfig, platform, containerName)
-}*/
